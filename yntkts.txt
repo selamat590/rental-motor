@@ -1,0 +1,82 @@
+CREATE DATABASE rental_motor;
+USE rental_motor;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    no_tlpn VARCHAR(20),
+    role ENUM('penyewa', 'pemilik', 'admin') NOT NULL
+);
+
+CREATE TABLE motor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pemilik_id INT NOT NULL,
+    merk VARCHAR(100),
+    tipe_cc ENUM('100','125','150'),
+    no_plat VARCHAR(20) UNIQUE,
+    status ENUM('tersedia', 'disewa', 'maintenance') DEFAULT 'tersedia',
+    photo longblob,
+    dokumen_kepemilikan longblob,
+    
+    FOREIGN KEY (pemilik_id) REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE tarif_rental (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    motor_id INT NOT NULL,
+    tarif_harian DECIMAL(10,2),
+    tarif_mingguan DECIMAL(10,2),
+    tarif_bulanan DECIMAL(10,2),
+
+    FOREIGN KEY (motor_id) REFERENCES motor(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE penyewaan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    penyewa_id INT NOT NULL,
+    motor_id INT NOT NULL,
+    tanggal_mulai DATE,
+    tanggal_selesai DATE,
+    tipe_durasi ENUM('harian','mingguan','bulanan'),
+    harga DECIMAL(10,2),
+    status ENUM('pending','berjalan','selesai','dibatalkan') DEFAULT 'pending',
+
+    FOREIGN KEY (penyewa_id) REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (motor_id) REFERENCES motor(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE transaksi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pemesanan_id INT NOT NULL,
+    jumlah DECIMAL(10,2),
+    metode_pembayaran ENUM('transfer','cash','ewallet'),
+    status ENUM('pending','berhasil','gagal') DEFAULT 'pending',
+    tanggal DATETIME,
+
+    FOREIGN KEY (pemesanan_id) REFERENCES penyewaan(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE bagi_hasil (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pemesanan_id INT NOT NULL,
+    bagi_hasil_pemilik DECIMAL(10,2),
+    bagi_hasil_admin DECIMAL(10,2),
+    settled_at DATETIME,
+    tanggal DATETIME,
+
+    FOREIGN KEY (pemesanan_id) REFERENCES penyewaan(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
