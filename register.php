@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $no_tlpn = $_POST['no_tlpn'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $role = $_POST['role'];
     
     // Validasi
     if ($password !== $confirm_password) {
@@ -26,7 +27,7 @@ $stmt = $pdo->prepare(
     "INSERT INTO users (username, email, no_tlpn, password, role) VALUES (?, ?, ?, ?, ?)"
 );
 
-if ($stmt->execute([$username, $email, $no_tlpn, $hashed_password, 'pelanggan'])) {
+if ($stmt->execute([$username, $email, $no_tlpn, $hashed_password, $role])) {
     $success = "Registrasi berhasil! Akun pelanggan siap dipakai.";
 } else {
     $error = "Terjadi kesalahan saat registrasi.";
@@ -55,50 +56,28 @@ if ($stmt->execute([$username, $email, $no_tlpn, $hashed_password, 'pelanggan'])
     <!-- Navbar -->
 
 <div
-  class="relative min-h-screen bg-cover bg-center bg-no-repeat"
-  style="background-image: url('kai-bg.jpg');"
+
 >
 
-  <header class="absolute inset-x-0 top-0 z-50">
-    <el-dialog>
-      <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
-        <div tabindex="0" class="fixed inset-0 focus:outline-none">
-          <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-100/10">
-            <div class="flex items-center justify-between">
-              <a href="#" class="-m-1.5 p-1.5">
-                <span class="sr-only">Your Company</span>
-                <img src="kai.png" alt="" class="w-auto" />
-              </a>
-              <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-200">
-                <span class="sr-only">Close menu</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-                  <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </button>
+ <header class="bg-black text-white ">
+
+        <div class="container mx-auto px-6 mt-0 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2">
+                <h1 class="text-5xl md:text-1xl font-black leading-tight uppercase">
+                    
+                </h1>
+                <br>
             </div>
-            <div class="mt-6 flow-root">
-              <div class="-my-6 divide-y divide-white/10">
-                <div class="space-y-2 py-6">
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-black hover:bg-white/5 active:text-orange-400">Product</a>
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-black hover:bg-white/5">Features</a>
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-black hover:bg-white/5">Marketplace</a>
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-black hover:bg-white/5">Company</a>
-                </div>
-                <div class="py-6">
-                  <a href="login.php" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-white/5">Log in</a>
-                </div>
-              </div>
+            <div class="md:w-1/2 mt-12 md:mt-0 relative">
+                <div class="absolute inset-0 bg-red-600 rounded-full blur-3xl opacity-20 transform scale-75"></div>
+                <img src="./assets/img/vario.png" alt="Main Bike" class="relative z-10 w-full object-contain">
             </div>
-          </el-dialog-panel>
         </div>
-      </dialog>
-    </el-dialog>
-  </header>
 
   <!-- register form -->
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12">
+<div class="min-h-screen bg-black dark:bg-transparent position-absolute  flex px-30 item-top  justify-left  py-3" style="position: absolute; top: 0.9%;">
   <div class="max-w-md w-full">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+    <div class="bg-black dark:bg-gray-800 rounded-2xl shadow-lg p-8">
 
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -167,7 +146,12 @@ if ($stmt->execute([$username, $email, $no_tlpn, $hashed_password, 'pelanggan'])
             </div>
         </div>
     </div>
-                    </div>
-                    </div>
+
+                     <footer class="py-5 px-3 bg-red-600">
+
+  <div class="max-w-6xl mx-auto mt-5 pt-30 border-t border-white-200 dark:border-white-800 text-center text-white dark:text-white">
+    <p>© 2026 Wonder Moto. All rights reserved.</p>
+  </div>
+</footer>
 </body>
 </html>
